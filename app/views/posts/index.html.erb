@@ -26,4 +26,19 @@
 
 <br>
 
-<%= link_to 'New Post', new_post_path %>
+
+<%= render 'form', post: Post.new %>
+
+<script>
+  $(function() {
+    $(document).on('ajax:success', 'form', function(e) {
+      $('input[name="post[title]"]').val('');
+      $('textarea[name="post[content]"]').val('');
+      let addBody = '<tr><td>'+e.detail[0].title+'</td><td>'+e.detail[0].content+'</td>';
+      addBody += '<td><a href=/posts/'+e.detail[0].id+'>Show</a></td>';
+      addBody += '<td><a href=/posts/'+e.detail[0].id+'/edit>Edit</a></td>';
+      addBody += '<td><a data-confirm=Are&nbsp;you&nbsp;sure? rel=nofollow data-method=delete href=/posts/'+e.detail[0].id+'>Destroy</a></td></tr>';
+      $('tbody').append(addBody);
+    })
+  })
+</script>
